@@ -1,0 +1,13 @@
+[package]
+name = "replay-engine"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+replay-core = { path = "../core" }
+replay-data = { path = "../data" }
+chrono = { workspace = true }
+chrono-tz = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }

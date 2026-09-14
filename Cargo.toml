@@ -1,0 +1,32 @@
+[workspace]
+resolver = "2"
+members = ["crates/core", "crates/data", "crates/engine", "crates/cli", "crates/app"]
+
+[workspace.package]
+edition = "2021"
+license = "AGPL-3.0-only"
+
+[workspace.dependencies]
+# Timezone-aware session/daily/weekly boundaries with real DST rules (spec §4
+# forbids manual offsets). chrono: MIT/Apache-2.0. chrono-tz: MIT/Apache-2.0.
+chrono = { version = "0.4", default-features = false, features = ["std", "clock", "serde"] }
+chrono-tz = { version = "0.10", features = ["serde"] }
+# Session header, event log and exports. Rust has no stdlib JSON. MIT/Apache-2.0.
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Parquet storage + SQL range scans and aggregation, in-process, no server (ADR 0004). MIT.
+duckdb = { version = "1.4", features = ["bundled"] }
+# Blocking HTTP for provider downloads; rustls, no OpenSSL, no async runtime. MIT/Apache-2.0.
+ureq = "2.12"
+# Dukascopy .bi5 payloads are raw LZMA1 streams. Replaces shelling out to 7-zip. MIT.
+lzma-rs = "0.3"
+# BYOK provider keys live in the OS keychain and nowhere else (spec §4), so we
+# need the platform credential stores: Windows Credential Manager, macOS
+# Keychain, and the Secret Service on Linux. Writing three FFI bindings by hand
+# is not a reasonable alternative. MIT/Apache-2.0.
+#
+# Every backend is named explicitly: with no store feature enabled keyring 3
+# falls back to an in-memory mock, which would silently forget the user's key.
+# Each one is gated by target in keyring's own manifest, so naming all three
+# costs nothing on the platforms that do not use them.
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service", "crypto-rust"] }
