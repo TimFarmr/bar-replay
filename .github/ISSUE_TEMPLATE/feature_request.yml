@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please skim the [non-goals](../blob/master/docs/invariants.md#non-goals)
+        Please skim the [non-goals](https://github.com/TimFarmr/bar-replay/blob/master/docs/invariants.md#non-goals)
         first. Automated strategies, broker connections, accounts, cloud sync
         and anything server-side are deliberately out of scope — not "later".
         Suggestions in those areas will be closed, and that is not a judgement
