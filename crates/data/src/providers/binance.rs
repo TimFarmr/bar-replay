@@ -2,7 +2,7 @@
 //!
 //! `GET /api/v3/klines` returns at most 1000 rows per call, so a range is
 //! walked forward in pages. Minutes with no trades are simply absent from the
-//! response, which is exactly the gap semantics we want (spec §5.4).
+//! response, which is exactly the gap semantics we want (invariant I4).
 //!
 //! Klines are trade prints with no bid/ask, so instruments served here are
 //! [`SpreadMode::Synthetic`](replay_core::SpreadMode::Synthetic).

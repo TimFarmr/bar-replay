@@ -1,7 +1,7 @@
-//! Provider adapters and the local Parquet/DuckDB store (M1).
+//! Provider adapters and the local Parquet/DuckDB store.
 //!
 //! Everything that touches the network or the disk lives here. The engine
-//! above it only ever sees data at or before the replay cursor (spec §5.1).
+//! above it only ever sees data at or before the replay cursor (invariant I1).
 
 pub mod catalog;
 pub mod fetch;

@@ -1,4 +1,4 @@
-//! Round trips, equity curve and summary statistics (M4).
+//! Round trips, equity curve and summary statistics.
 //!
 //! Everything here is a **view over the trade ledger** (ADR 0009), computed on
 //! demand from [`Trade`] rows and never stored as a second table that could
@@ -10,7 +10,7 @@
 //! * A statistic is never allowed to become `NaN` or infinity. Both serialise
 //!   as `null` or as a nonsense number over IPC and would corrupt the stats
 //!   panel; an empty sample is reported as `0.0` or `None` instead.
-//! * An R-multiple is only defined when the trade had a stop (spec §4), so it
+//! * An R-multiple is only defined when the trade had a stop, so it
 //!   is an `Option` all the way to the UI rather than a silent zero.
 
 use crate::order::{Assumption, Role, RoundTrip, Side, Trade};
@@ -94,7 +94,7 @@ pub fn round_trips(trades: &[Trade], multiplier: f64) -> Vec<RoundTrip> {
                         realised,
                         r_multiple: r_multiple(realised, lot.risk_per_unit, qty, multiplier),
                         // The exit's assumption, so a trade that depended on the
-                        // pessimistic stop-first guess (spec §5.3) stays flagged
+                        // pessimistic stop-first guess (invariant I3) stays flagged
                         // everywhere it is shown.
                         assumption: t.assumption,
                     });
@@ -186,7 +186,7 @@ pub struct Summary {
     /// would drag the average toward a number nobody risked.
     pub average_r: Option<f64>,
     /// Round trips whose exit rested on the pessimistic stop-first assumption
-    /// (spec §5.3). Surfaced as a count so a trader can judge how much of the
+    /// (invariant I3). Surfaced as a count so a trader can judge how much of the
     /// result depended on a guess.
     pub flagged_trades: usize,
 }

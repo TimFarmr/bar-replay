@@ -1,6 +1,6 @@
 # ADR 0002: Tauri 2 as the desktop shell
 
-Status: accepted (locked by spec §3)
+Status: accepted (locked by docs/adr)
 
 ## Context
 Electron bundles Chromium (~150 MB installers). Tauri uses the OS webview and

@@ -1,0 +1,40 @@
+name: Bug report
+description: Something behaved incorrectly
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If the problem is a wrong **number** — a fill, a P&L, a candle —
+        **Review → Export** produces the exact trade log. Attaching it is
+        usually the fastest way to show what happened.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: And what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      placeholder: |
+        1. Instrument and provider (e.g. binance / BTCUSDT)
+        2. Date range and the cursor time it went wrong at
+        3. Timeframe
+        4. What you clicked
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: From the release you downloaded, or the commit you built.
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Windows, macOS, Linux]
+    validations:
+      required: true

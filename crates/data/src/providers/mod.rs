@@ -19,7 +19,7 @@ pub struct ProviderInfo {
     pub label: &'static str,
     /// Needs a BYOK API key before it can fetch anything.
     pub needs_key: bool,
-    /// Usable with no configuration at all, which spec §4 requires of the
+    /// Usable with no configuration at all, which the data policy requires of the
     /// providers offered on first launch.
     pub free: bool,
     /// Built from a file the user picked rather than from an id alone, so it

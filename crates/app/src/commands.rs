@@ -94,7 +94,7 @@ pub struct NewSession {
     pub to: i64,
     pub balance: f64,
     /// Spread in instrument points. For a trade-only provider this is the
-    /// trader's own assumption, and the session UI labels it as such (§5.3).
+    /// trader's own assumption, and the session UI labels it as such (I3).
     pub spread_points: f64,
     pub commission_per_unit: f64,
 }
@@ -145,7 +145,7 @@ fn open_by_id(state: &State<'_, AppState>, id: String) -> Answer<ViewDto> {
     let mut replay = Replay::new(bars.iter().map(|b| b.ts).collect())
         .ok_or_else(|| "this session has no bars to replay".to_string())?;
 
-    // Resume exactly where the user left off (spec §5.6).
+    // Resume exactly where the user left off (invariant I6).
     if let Some(cursor) = session.resume_cursor(&state.root).map_err(oops)? {
         replay.jump_to(cursor);
     }

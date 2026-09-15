@@ -4,7 +4,7 @@ Status: accepted (M1, 2026-09-14)
 
 ## Context
 ADR 0004 puts range scans and aggregation in DuckDB. But daily and weekly
-candles open at local midnight in the instrument's session timezone (spec §4),
+candles open at local midnight in the instrument's session timezone,
 and DuckDB's timezone support would be a *second* implementation of DST rules
 alongside chrono-tz. Two implementations of a rule this subtle will eventually
 disagree, and the disagreement would be silent: a daily candle off by an hour

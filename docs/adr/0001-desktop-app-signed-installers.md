@@ -1,6 +1,6 @@
 # ADR 0001: Desktop app with signed installers
 
-Status: accepted (locked by spec §3)
+Status: accepted (locked by docs/adr)
 
 ## Context
 The loss function: a non-technical trader does a first honest replay within

@@ -3,7 +3,7 @@
 //! Every user action is written to `events.jsonl` the moment it happens and
 //! keyed to the **cursor**, never to wall-clock time (ADR 0010). Resuming a
 //! session replays that log, which is also what makes the determinism test in
-//! spec §6 meaningful: same log, same engine, same ledger.
+//! the verification checklist meaningful: same log, same engine, same ledger.
 //!
 //! At creation the session copies the base bars it was started with into its
 //! own directory (ADR 0012), so a provider silently revising history later can
@@ -31,12 +31,12 @@ pub struct Session {
     pub range_to: Timestamp,
     pub balance: f64,
     /// Applied to market and stop fills when the provider has no real bid/ask
-    /// (spec §5.3). Ignored for [`SpreadMode::Historical`] instruments.
+    /// (invariant I3). Ignored for [`SpreadMode::Historical`] instruments.
     pub spread_points: f64,
     pub commission_per_unit: f64,
 }
 
-/// The account a session trades (spec §4): one per session, no multi-account
+/// The account a session trades: one per session, no multi-account
 /// and no portfolio-level netting. Grouped rather than passed as loose floats
 /// so a caller cannot silently swap the spread and the commission.
 #[derive(Clone, Copy, Debug, PartialEq)]

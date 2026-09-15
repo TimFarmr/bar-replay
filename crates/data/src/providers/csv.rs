@@ -1,6 +1,6 @@
 //! CSV: candles the user already has, imported from a file.
 //!
-//! Spec §4 fixes the schema: required columns `timestamp, open, high, low,
+//! Spec the data policy fixes the schema: required columns `timestamp, open, high, low,
 //! close`, optional `volume`, timestamps as ISO-8601 or epoch, and rows
 //! **strictly ascending** by timestamp — "out-of-order or duplicate rows are
 //! rejected with a report, never silently sorted or deduped".
@@ -42,7 +42,7 @@ struct Columns {
     high: usize,
     low: usize,
     close: usize,
-    /// `None` when the file has no volume column: §4 makes it optional, and an
+    /// `None` when the file has no volume column: the data policy makes it optional, and an
     /// absent volume is 0.0 rather than a reason to refuse the file.
     volume: Option<usize>,
     width: usize,
@@ -77,7 +77,7 @@ impl Columns {
 
 /// ISO-8601 with an explicit offset, or an epoch count.
 ///
-/// A timestamp with no zone is refused rather than assumed to be UTC: §4 says
+/// A timestamp with no zone is refused rather than assumed to be UTC: the data policy says
 /// the session timezone is always shown and never silently assumed, and
 /// guessing here would shift every candle in the file by the user's offset
 /// without telling them.
@@ -157,7 +157,7 @@ pub fn parse(text: &str) -> Result<Vec<Bar>> {
 
         // An open or close outside the bar's own range is not a rounding
         // artefact, it is a broken export, and it would make every high/low
-        // stop in the fill model fire at a price that never traded (§5.3).
+        // stop in the fill model fire at a price that never traded (I3).
         if low > open.min(close) || open.max(close) > high {
             return Err(Error::Data(format!(
                 "line {line}: open {open}, high {high}, low {low}, close {close} is not a valid candle; the low must be the lowest price and the high the highest"
@@ -213,10 +213,10 @@ impl Provider for Csv {
             multiplier: 1.0,
             quote_currency: "USD".into(),
             // Nothing in the file tells us the venue or its hours, so the
-            // import claims no calendar: every gap is a data gap (§5.4).
+            // import claims no calendar: every gap is a data gap (I4).
             session_tz: Tz::UTC,
             // A CSV of candles has no bid/ask; the spread is a user constant
-            // and the UI must say so (§5.3).
+            // and the UI must say so (I3).
             spread_mode: SpreadMode::Synthetic,
             market: Market::Continuous,
         }])

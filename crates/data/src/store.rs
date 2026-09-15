@@ -3,7 +3,7 @@
 //! DuckDB runs in-process and both writes and reads the Parquet files, so no
 //! separate Parquet library is needed and there is no server anywhere.
 //!
-//! **The no-lookahead filter lives here** (spec §5.1): `ts <= cursor` is part
+//! **The no-lookahead filter lives here** (invariant I1): `ts <= cursor` is part
 //! of every query, so data past the cursor never reaches the engine, let alone
 //! the chart.
 
@@ -169,7 +169,7 @@ impl Store {
             return Ok(Vec::new());
         }
         let p = sql_path(path);
-        // §5.1: the cursor filter is part of the scan, not a later step.
+        // I1: the cursor filter is part of the scan, not a later step.
         let src = format!(
             "(SELECT * FROM read_parquet('{p}') WHERE ts >= {} AND ts <= {})",
             tf.bucket_start(from, tz).0,
@@ -227,7 +227,7 @@ impl Store {
             .collect::<std::result::Result<Vec<_>, _>>()
             .map_err(|e| db("reading candles", e))?;
 
-        // Only the newest candle can still be forming (§5.2).
+        // Only the newest candle can still be forming (I2).
         if let Some(last) = out.last_mut() {
             last.complete = tf.next_bucket(last.ts, tz).0 <= cursor.0 + Timestamp::MINUTE;
         }

@@ -8,5 +8,5 @@ close, full close, SL/TP hit). `Position` is computed by folding the ledger,
 never stored as independently mutable state.
 
 ## Consequences
-Determinism (spec §5.5) is checkable: two replays either produce the same
+Determinism (invariant I5) is checkable: two replays either produce the same
 ledger or they do not. There is no second copy of state to drift.

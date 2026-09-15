@@ -3,7 +3,7 @@
  * because the backend serializes them that way.
  *
  * Everything here is already cursor-filtered: the UI is never sent data past
- * the replay cursor and asked to hide it (spec §5.1).
+ * the replay cursor and asked to hide it (invariant I1).
  */
 
 /** `ts` is the candle's OPEN time in epoch milliseconds, UTC. */
@@ -14,7 +14,7 @@ export interface Candle {
   low: number
   close: number
   volume: number
-  /** False while this candle is still forming at the cursor (spec §5.2). */
+  /** False while this candle is still forming at the cursor (invariant I2). */
   complete: boolean
 }
 
@@ -70,7 +70,7 @@ export interface SessionSummary {
 
 export interface Cursor {
   cursor: number
-  /** Formatted in `timezone`, not UTC (spec §4). */
+  /** Formatted in `timezone`, not UTC. */
   cursorLabel: string
   timezone: string
   position: number
@@ -81,7 +81,7 @@ export interface Cursor {
 
 export type GapKind = 'calendar' | 'data'
 
-/** Spec §5.4: a closed market and a hole in the data are never the same thing. */
+/** Invariant I4: a closed market and a hole in the data are never the same thing. */
 export interface Gap {
   from: number
   to: number
@@ -98,7 +98,7 @@ export type Reason = 'market' | 'limit' | 'stop' | 'sl' | 'tp' | 'close'
 /**
  * `sl_first` means the outcome rested on the pessimistic assumption because one
  * bar touched both the stop and the target and no finer data was available.
- * Spec §5.3 requires showing this wherever it affected a trade.
+ * Invariant I3 requires showing this wherever it affected a trade.
  */
 export type Assumption = 'none' | 'sl_first' | 'resolved_by_ticks'
 
@@ -159,7 +159,7 @@ export interface Step {
   cursor: Cursor
   tail: Candle[]
   trading: Trading
-  /** Gaps uncovered by this step (spec §5.4). */
+  /** Gaps uncovered by this step (invariant I4). */
   newGaps: Gap[]
 }
 
@@ -207,7 +207,7 @@ export interface Summary {
   expectancy: number
   maxDrawdown: number
   averageR: number | null
-  /** Trades whose outcome rested on the pessimistic assumption (spec §5.3). */
+  /** Trades whose outcome rested on the pessimistic assumption (invariant I3). */
   flaggedTrades: number
 }
 

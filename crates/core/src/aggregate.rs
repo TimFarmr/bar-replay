@@ -1,6 +1,6 @@
 //! Reference aggregation of base (1-minute) bars into any timeframe.
 //!
-//! This is the definition the store's SQL is tested against (spec §6:
+//! This is the definition the store's SQL is tested against (the verification checklist:
 //! "assert the last candle equals the manual aggregate of 1m bars"). Keeping a
 //! dependency-free implementation here means the invariant can be checked
 //! without a database.
@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Candle {
     /// Bucket open time, not the first bar's timestamp: a candle whose opening
-    /// minutes are missing still sits in its own slot (§5.4, no shifting).
+    /// minutes are missing still sits in its own slot (I4, no shifting).
     pub ts: Timestamp,
     pub open: f64,
     pub high: f64,
@@ -20,15 +20,15 @@ pub struct Candle {
     pub close: f64,
     pub volume: f64,
     /// False while the bucket is still being revealed by the cursor. Only the
-    /// newest candle can be incomplete (§5.2).
+    /// newest candle can be incomplete (I2).
     pub complete: bool,
 }
 
 /// Aggregate ascending base `bars` into `tf` candles as of `cursor`.
 ///
 /// Bars after `cursor` are ignored rather than trusted: the no-lookahead filter
-/// belongs in the data layer (§5.1), and this is the last line of defence.
-/// Buckets with no bars produce no candle — gaps stay gaps (§5.4).
+/// belongs in the data layer (I1), and this is the last line of defence.
+/// Buckets with no bars produce no candle — gaps stay gaps (I4).
 pub fn aggregate(bars: &[Bar], tf: Timeframe, tz: Tz, cursor: Timestamp) -> Vec<Candle> {
     let mut out: Vec<Candle> = Vec::new();
 

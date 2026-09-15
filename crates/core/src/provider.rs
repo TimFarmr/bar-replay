@@ -6,7 +6,7 @@
 use crate::{Bar, Instrument, Market, Result, SpreadMode, Tick, Timestamp};
 
 /// A market-data source. Implementations return what the provider has and
-/// nothing else: no interpolation, no forward-fill, no synthesized bars (§5.4).
+/// nothing else: no interpolation, no forward-fill, no synthesized bars (I4).
 pub trait Provider: Send + Sync {
     /// Stable adapter id, matching [`Instrument::provider`].
     fn id(&self) -> &'static str;
@@ -28,7 +28,7 @@ pub trait Provider: Send + Sync {
 
     /// Ticks with `from <= ts < to`, ascending. `Ok(None)` means this provider
     /// has no tick data at all; the fill model then assumes stop-loss first
-    /// (§5.3, ADR 0013).
+    /// (I3, ADR 0013).
     fn ticks(
         &self,
         _instrument: &Instrument,
@@ -40,7 +40,7 @@ pub trait Provider: Send + Sync {
 }
 
 /// Deterministic fixture for tests. Never offered in the UI: real candles come
-/// from real providers only (§5.4).
+/// from real providers only (I4).
 pub struct Stub;
 
 impl Stub {

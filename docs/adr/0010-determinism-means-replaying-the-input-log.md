@@ -10,7 +10,7 @@ session twice" cannot mean free-play.
 Every user action (place/modify/cancel order, close, cursor move, note) is
 logged keyed to the **cursor timestamp**, never wall-clock time. Determinism
 means: the same input log through the same engine version yields a
-byte-identical trade ledger. The §6 determinism test is a scripted session.
+byte-identical trade ledger. The the verification checklist determinism test is a scripted session.
 
 ## Consequences
 Wall-clock time appears nowhere in the engine's inputs. Exports format numbers

@@ -1,5 +1,5 @@
 //! Replay state: where the cursor is, what it is allowed to see, and how a
-//! session is persisted (M2). Trading simulation arrives in M3.
+//! session is persisted, and how trades are simulated against it.
 
 pub mod export;
 pub mod fills;

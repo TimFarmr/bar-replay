@@ -1,4 +1,4 @@
-# Data schema — implemented (spec §4)
+# Data schema
 
 Decisions it rests on: ADR 0008–0015. Where the built code differs from the
 original proposal, the difference is noted inline and marked **changed**.
@@ -8,12 +8,12 @@ original proposal, the difference is noted inline and marked **changed**.
 - All timestamps are UTC milliseconds (`i64`). A bar's timestamp is its **open time**.
 - The cursor `C` is the open time of the newest visible base bar. A base bar is
   visible iff `ts <= C`. `C` only ever equals the `ts` of an existing base bar and
-  advances to the next existing bar, so gaps are skipped, never filled (§5.4).
+  advances to the next existing bar, so gaps are skipped, never filled (I4).
 - The newest candle of timeframe `tf` at cursor `C` is the aggregate of base bars
-  with `floor(C, tf) <= ts <= C` (§5.2). It is in progress unless
+  with `floor(C, tf) <= ts <= C` (I2). It is in progress unless
   `C == floor(C, tf) + tf - 1min`.
 - The visibility filter `ts <= C` is applied in the DuckDB query, before any data
-  reaches the UI (§5.1). Nothing above the data layer ever holds bars past `C`.
+  reaches the UI (I1). Nothing above the data layer ever holds bars past `C`.
 
 Inherent to 1-minute replay: stepping to bar `C` reveals that whole minute at
 once. That is the resolution floor, not a leak; it applies equally to every bar.
@@ -66,7 +66,7 @@ SELECT (ts // $tf) * $tf AS ts,
        first(open ORDER BY ts) AS open, max(high) AS high, min(low) AS low,
        last(close ORDER BY ts) AS close, sum(volume) AS volume
 FROM '1m.parquet'
-WHERE ts >= $from AND ts <= $cursor        -- §5.1 lives here
+WHERE ts >= $from AND ts <= $cursor        -- I1 lives here
 GROUP BY 1 ORDER BY 1
 ```
 
@@ -125,7 +125,7 @@ One row per fill, in fill order:
 | side, qty, price | |
 | role | `entry` or `exit` |
 | reason | `market` `limit` `stop` `sl` `tp` `close` |
-| assumption | `none`, `sl_first`, or `resolved_by_ticks` (§5.3, ADR 0013); shown in the UI |
+| assumption | `none`, `sl_first`, or `resolved_by_ticks` (I3, ADR 0013); shown in the UI |
 | risk_per_unit | **changed**: distance from entry to the stop set at entry. Recorded on entry rows because an R-multiple cannot be reconstructed later once the stop has been moved. `null` when the trade was taken without a stop. |
 | commission | |
 

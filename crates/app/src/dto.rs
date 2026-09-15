@@ -2,7 +2,7 @@
 //!
 //! These types exist so the webview receives exactly what it needs to draw and
 //! nothing more. In particular the candle list is always the cursor-filtered
-//! window: the UI is never handed future data and asked to hide it (spec §5.1).
+//! window: the UI is never handed future data and asked to hide it (invariant I1).
 
 use replay_core::{Candle, Instrument, Market, SpreadMode, Timestamp};
 use replay_engine::order::{Assumption, Reason, Role, Side};
@@ -17,7 +17,7 @@ fn label(ts: Timestamp) -> String {
     ts.to_string()
 }
 
-/// Spec §4: session boundaries are reasoned about in the instrument's own
+/// Spec the data policy: session boundaries are reasoned about in the instrument's own
 /// timezone, and that timezone is always shown, never silently assumed. The
 /// cursor is therefore rendered in it rather than in UTC, and the UI prints the
 /// zone name beside it.
@@ -53,7 +53,7 @@ pub struct InstrumentDto {
     pub quote_currency: String,
     pub session_tz: String,
     /// Shown verbatim in the session UI so a synthetic spread is never mistaken
-    /// for historical fact (spec §5.3).
+    /// for historical fact (invariant I3).
     pub spread_mode: SpreadMode,
     /// Lets the setup screen prefer an always-open instrument for a first run
     /// instead of naming one in the UI.
@@ -106,7 +106,7 @@ pub struct SessionSummaryDto {
 }
 
 /// Where the replay currently stands. `position` and `bars` are for a progress
-/// bar only — navigation is always by timestamp (spec §5.1).
+/// bar only — navigation is always by timestamp (invariant I1).
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CursorDto {
@@ -128,7 +128,7 @@ pub struct ViewDto {
     pub timeframe: String,
     pub cursor: CursorDto,
     pub candles: Vec<Candle>,
-    /// Gaps inside the visible window, already classified (spec §5.4).
+    /// Gaps inside the visible window, already classified (invariant I4).
     pub gaps: Vec<Gap>,
     pub trading: TradingDto,
 }
@@ -169,7 +169,7 @@ pub struct TradeDto {
     pub role: Role,
     pub reason: Reason,
     /// `sl_first` marks a trade whose outcome rested on the pessimistic
-    /// assumption rather than on data. The UI must show it (spec §5.3).
+    /// assumption rather than on data. The UI must show it (invariant I3).
     pub assumption: Assumption,
     pub commission: f64,
     pub realised: f64,
@@ -255,7 +255,7 @@ pub struct StepDto {
     /// along: the UI must never show a stale position.
     pub trading: TradingDto,
     /// Gaps uncovered by this step, so a data gap crossed during playback is
-    /// reported the moment it is revealed (spec §5.4).
+    /// reported the moment it is revealed (invariant I4).
     pub new_gaps: Vec<Gap>,
 }
 

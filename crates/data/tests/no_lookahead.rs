@@ -1,5 +1,5 @@
-//! The no-lookahead property test (spec §6, invariant §5.1) and the
-//! partially-formed-candle test (§5.2), run against the real storage path:
+//! The no-lookahead property test (the verification checklist, invariant I1) and the
+//! partially-formed-candle test (I2), run against the real storage path:
 //! Parquet on disk, DuckDB doing the scan and the aggregation.
 //!
 //! Deliberately not a unit test on the in-memory aggregator. The invariant that
@@ -101,7 +101,7 @@ fn no_candle_at_any_timeframe_ever_reaches_past_the_cursor() {
     assert_eq!(checked, 8000, "1000 cursors x 8 timeframes");
 }
 
-/// Spec §6: "replay to T, read the 1h series, assert the last candle equals the
+/// Spec the verification checklist: "replay to T, read the 1h series, assert the last candle equals the
 /// manual aggregate of 1m bars in [floor(T,1h), T]". Computed here by hand from
 /// the raw bars, not by calling the aggregator, so the two cannot agree by
 /// sharing a bug.

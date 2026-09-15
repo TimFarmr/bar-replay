@@ -3,7 +3,7 @@
 //! [`simulate`] is a **pure function of the cursor**. It never mutates
 //! long-lived state, so moving the cursor backwards is not an undo operation
 //! that has to be written and maintained — it is the same computation over
-//! fewer bars. That is what makes spec §5.5 hold by construction: there is no
+//! fewer bars. That is what makes invariant I5 hold by construction: there is no
 //! second copy of state that could be left behind as a ghost fill.
 //!
 //! Within one bar the order is deliberate:
@@ -57,7 +57,7 @@ impl TickSource for NoTicks {
 /// Rebuild the whole trading state as of `cursor`.
 ///
 /// `bars` must be ascending; `events` must be in `seq` order. Bars and events
-/// after `cursor` are ignored, which is the no-lookahead rule (spec §5.1)
+/// after `cursor` are ignored, which is the no-lookahead rule (invariant I1)
 /// applied to simulation rather than to drawing.
 pub fn simulate(
     cfg: SimConfig,
@@ -381,7 +381,7 @@ fn push(
 }
 
 /// Record what the trader was risking per unit when the position opened, which
-/// is what an R-multiple is measured against (M4). Called once the entry's
+/// is what an R-multiple is measured against. Called once the entry's
 /// protection is known, since a market order carries its stop in the same
 /// event that fills it.
 fn note_entry_risk(st: &mut SimState, sl: Option<f64>) {

@@ -1,6 +1,6 @@
 //! The instruments offered on first launch.
 //!
-//! Both free providers must work with zero configuration (spec §4), so the
+//! Both free providers must work with zero configuration, so the
 //! symbols, their tick sizes and their session timezones ship in the binary
 //! rather than behind a lookup call that could fail offline.
 
@@ -19,7 +19,7 @@ fn fx(symbol: &str, decimals: u32) -> Instrument {
         quote_currency: symbol[3..].into(),
         // FX has no single exchange; the market's own week runs on UTC.
         session_tz: Tz::UTC,
-        // Dukascopy publishes real bid and ask (§5.3).
+        // Dukascopy publishes real bid and ask (I3).
         spread_mode: SpreadMode::Historical,
         market: Market::FxWeek,
     }
@@ -35,7 +35,7 @@ fn crypto(symbol: &str, quote: &str, decimals: u32) -> Instrument {
         quote_currency: quote.into(),
         session_tz: Tz::UTC,
         // Binance klines are trade prints only: the spread is a user constant
-        // and the UI must say so (§5.3).
+        // and the UI must say so (I3).
         spread_mode: SpreadMode::Synthetic,
         market: Market::Continuous,
     }

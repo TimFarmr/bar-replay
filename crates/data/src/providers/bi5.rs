@@ -60,7 +60,7 @@ fn be_f32(b: &[u8], at: usize) -> f32 {
 ///
 /// Dukascopy pads minutes that had no ticks with a flat zero-volume record
 /// (open == high == low == close). Those are forward-fill, not data, so they
-/// are dropped: a minute with no trading is a gap (spec §5.4).
+/// are dropped: a minute with no trading is a gap (invariant I4).
 pub fn decode_minutes(raw: &[u8], day: Timestamp, point: f64) -> Result<Vec<Bar>> {
     let body = inflate(raw, "minute file")?;
     if body.len() % MINUTE_REC != 0 {

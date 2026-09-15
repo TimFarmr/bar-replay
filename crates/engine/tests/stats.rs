@@ -1,4 +1,4 @@
-//! Statistics tests (M4).
+//! Statistics tests.
 //!
 //! Ledgers here are written by hand rather than produced by the simulator. The
 //! pairing rules have to hold for any ledger shape — partial closes, scale-ins,

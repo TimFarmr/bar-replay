@@ -1,4 +1,4 @@
-//! `bar-replay` — fetch and inspect cached market data (spec §7, M1).
+//! `bar-replay` — fetch and inspect cached market data.
 //!
 //! The desktop app is the product; this exists so the data layer can be driven
 //! and verified without a UI, and so golden fixtures can be regenerated.
@@ -142,7 +142,7 @@ fn example_week() -> (String, String) {
     )
 }
 
-/// `YYYY-MM-DD` or `YYYY-MM-DDTHH:MM`, always UTC (spec §4: UTC internally).
+/// `YYYY-MM-DD` or `YYYY-MM-DDTHH:MM`, always UTC (the data policy: UTC internally).
 fn parse_when(s: &str) -> Result<Timestamp> {
     let bad = || Error::Provider(format!("{s:?} is not YYYY-MM-DD or YYYY-MM-DDTHH:MM"));
     let (date, time) = match s.split_once('T') {
@@ -212,7 +212,7 @@ fn cmd_inspect(args: &[String]) -> Result<()> {
                 "  gaps     {} minutes in range have no bar (weekends, holidays, quiet minutes)",
                 span_minutes - c.bars
             );
-            println!("  session timezone: {} (spec §4)", inst.session_tz);
+            println!("  session timezone: {}", inst.session_tz);
         }
     }
     Ok(())

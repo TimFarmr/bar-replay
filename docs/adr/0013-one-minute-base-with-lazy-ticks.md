@@ -12,7 +12,7 @@ The base series is 1-minute bars. When a bar touches both stop-loss and
 take-profit of an order, the engine fetches ticks for that bar's hour and
 walks them to find which was hit first. If the provider has no ticks or the
 fetch fails, stop-loss is assumed first and the trade is flagged in the UI
-(spec §5.3).
+(invariant I3).
 
 ## Consequences
 First session is fast. Every trade that relied on the pessimistic assumption

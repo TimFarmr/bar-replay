@@ -2,7 +2,7 @@
 //!
 //! Intraday buckets are a plain floor over UTC milliseconds. Daily and weekly
 //! buckets open at local midnight in the instrument's session timezone, with
-//! DST handled by chrono-tz, never by a manual offset (spec §4).
+//! DST is handled by chrono-tz, never by a manual offset.
 
 use crate::Timestamp;
 use chrono::{Datelike, Duration, LocalResult, NaiveDate, NaiveDateTime, TimeZone};
@@ -111,7 +111,7 @@ impl Timeframe {
     }
 
     /// Open time of the bucket after the one containing `ts`. Used to decide
-    /// whether the newest candle is still forming (§5.2).
+    /// whether the newest candle is still forming (I2).
     pub fn next_bucket(self, ts: Timestamp, tz: Tz) -> Timestamp {
         let start = self.bucket_start(ts, tz);
         match self.fixed_ms() {

@@ -3,7 +3,7 @@
 Status: accepted (M3, 2026-09-14)
 
 ## Context
-Spec §5.5 requires that moving the cursor back behind a fill rolls that fill
+Invariant I5 requires that moving the cursor back behind a fill rolls that fill
 back "as if it never happened", with no ghost state left behind. The obvious
 implementation — mutable position state plus an undo path — means writing and
 maintaining a second code path that is exercised rarely and wrong quietly.

@@ -1,4 +1,4 @@
-//! Sessions survive app restarts (spec §4) and are pinned to the data they
+//! Sessions survive app restarts and are pinned to the data they
 //! were started with (ADR 0012).
 
 use replay_core::{Instrument, Market, SpreadMode, Timestamp};

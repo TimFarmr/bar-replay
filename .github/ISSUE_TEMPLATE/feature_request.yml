@@ -1,0 +1,34 @@
+name: Feature request
+description: Suggest something the app should do
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please skim the [non-goals](../blob/master/docs/invariants.md#non-goals)
+        first. Automated strategies, broker connections, accounts, cloud sync
+        and anything server-side are deliberately out of scope — not "later".
+        Suggestions in those areas will be closed, and that is not a judgement
+        on the idea.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The problem, rather than the solution you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+    validations:
+      required: true
+  - type: checkboxes
+    id: friction
+    attributes:
+      label: Friction check
+      description: >
+        The project optimises for a non-technical trader reaching their first
+        honest replay within five minutes.
+      options:
+        - label: This does not add a setup step for someone who just wants to replay a chart.

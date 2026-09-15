@@ -1,4 +1,4 @@
-//! Review commands: statistics, the journal, and local export (M4).
+//! Review commands: statistics, the journal, and local export.
 //!
 //! All of it is derived from the ledger and the event log as of the cursor, so
 //! reviewing a session halfway through shows what the trader knew halfway

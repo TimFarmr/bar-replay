@@ -1,6 +1,6 @@
 //! Databento: CME futures and equities, bring-your-own-key.
 //!
-//! BYOK is strictly an upgrade path (spec §4). Nothing here is reachable
+//! BYOK is strictly an upgrade path. Nothing here is reachable
 //! without a key the user pasted themselves, the two free adapters keep
 //! working when it is absent, and a missing key produces a sentence telling
 //! them where to add one — never a panic and never a hang.
@@ -53,13 +53,13 @@ fn future(symbol: &str, multiplier: f64) -> Instrument {
         point: 0.25,
         multiplier,
         quote_currency: "USD".into(),
-        // Spec §4 names America/New_York as the session zone for CME futures.
+        // Spec the data policy names America/New_York as the session zone for CME futures.
         session_tz: Tz::America__New_York,
         // ohlcv-1m is built from trade prints, so there is no historical
-        // spread here and the UI must say so (§5.3).
+        // spread here and the UI must say so (I3).
         spread_mode: SpreadMode::Synthetic,
         // CME's daily maintenance halt and holiday calendar are not modelled
-        // yet, so every gap will read as a data gap (§5.4). Adding a variant to
+        // yet, so every gap will read as a data gap (I4). Adding a variant to
         // `Market` is a core change and belongs in its own piece of work;
         // claiming `FxWeek` here would be worse, because the CME week is not
         // the FX week.
@@ -73,7 +73,7 @@ fn builtin() -> Vec<Instrument> {
 
 /// Databento's error bodies quote the request, and our request carries the key
 /// as HTTP Basic userinfo, so every message leaving this module is scrubbed.
-/// Spec §4: keys are never logged.
+/// Spec the data policy: keys are never logged.
 fn redact(message: String, key: &str) -> String {
     message.replace(key, "<api key>")
 }

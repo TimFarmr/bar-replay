@@ -206,7 +206,7 @@ button.tf.on {
   border-color: var(--good);
 }
 
-/* A synthetic spread must never read as historical fact (spec §5.3). */
+/* A synthetic spread must never read as historical fact (invariant I3). */
 .badge.warn {
   color: var(--warn);
   border-color: var(--warn);
@@ -381,7 +381,7 @@ button.sell {
   white-space: nowrap;
 }
 
-/* A trade whose outcome rested on an assumption, never on data (spec §5.3). */
+/* A trade whose outcome rested on an assumption, never on data (invariant I3). */
 .flag {
   color: var(--warn);
 }

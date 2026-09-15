@@ -5,7 +5,8 @@
 datafeed, and `eurusd-2024-01-01-1h.csv` is the hourly aggregate the code is
 expected to produce from it.
 
-The spec (§6) asks for a golden test against "a known week of EURUSD 1m data",
+The [verification checklist](../../../../docs/invariants.md#verification) asks
+for a golden test against a known week of EURUSD 1-minute data,
 and real data is what makes it meaningful: it contains a weekend gap, a
 holiday, and minutes Dukascopy pads with flat zero-volume records, all of which
 the aggregation has to handle correctly. Synthetic data would exercise none of

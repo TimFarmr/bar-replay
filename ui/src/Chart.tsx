@@ -99,7 +99,7 @@ export const Chart = forwardRef<ChartHandle, { priceDecimals: number; sessionTz:
       if (chart === null) return
       chartRef.current = chart
 
-      // Spec §4: the axis reads in the instrument's session timezone, which
+      // Spec the data policy: the axis reads in the instrument's session timezone, which
       // the UI also names. Left unset, KLineCharts would quietly render the
       // machine's local time under a label saying otherwise.
       chart.setTimezone(sessionTz)

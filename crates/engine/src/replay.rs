@@ -1,6 +1,6 @@
 //! The replay cursor.
 //!
-//! **The cursor is a timestamp, never an array index** (spec §5.1). Navigation
+//! **The cursor is a timestamp, never an array index** (invariant I1). Navigation
 //! binary-searches the list of base-bar open times, so nothing here can drift
 //! out of step with the data the way a stored index would after a refetch.
 //!

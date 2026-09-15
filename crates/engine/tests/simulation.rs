@@ -1,4 +1,4 @@
-//! The fill, determinism and rollback tests required by spec §6.
+//! The fill, determinism and rollback tests required by the verification checklist.
 //!
 //! Bars here are synthetic and hand-built. Real market data is used elsewhere
 //! (the golden test); what these need is a bar whose shape is *exactly* the
@@ -75,7 +75,7 @@ fn a_market_order_fills_at_the_close_of_the_bar_the_trader_is_looking_at() {
     assert_eq!(st.trades[0].reason, Reason::Market);
 }
 
-/// Spec §6: "limit order not touched".
+/// Spec the verification checklist: "limit order not touched".
 #[test]
 fn a_limit_order_the_market_never_reaches_stays_working_and_trades_nothing() {
     let bars = flat(10);
@@ -98,7 +98,7 @@ fn a_limit_order_the_market_never_reaches_stays_working_and_trades_nothing() {
     assert_eq!(st.balance, 10_000.0);
 }
 
-/// Spec §6: "gap-open through a stop".
+/// Spec the verification checklist: "gap-open through a stop".
 #[test]
 fn a_stop_jumped_by_a_gap_fills_at_the_open_not_at_the_stop_price() {
     let mut bars = flat(4);
@@ -122,7 +122,7 @@ fn a_stop_jumped_by_a_gap_fills_at_the_open_not_at_the_stop_price() {
     assert_eq!(st.balance, 9_990.0);
 }
 
-/// Spec §6: "SL and TP inside one bar", and §5.3: never silently pick the
+/// Spec the verification checklist: "SL and TP inside one bar", and I3: never silently pick the
 /// favourable outcome.
 #[test]
 fn a_bar_hitting_both_stop_and_target_takes_the_stop_and_marks_the_trade() {
@@ -171,7 +171,7 @@ fn ticks_can_overturn_the_pessimistic_assumption() {
     assert_eq!(st.balance, 10_001.0);
 }
 
-/// Spec §6: "partial close".
+/// Spec the verification checklist: "partial close".
 #[test]
 fn closing_part_of_a_position_leaves_the_rest_open() {
     let mut bars = flat(3);
@@ -193,7 +193,7 @@ fn closing_part_of_a_position_leaves_the_rest_open() {
     assert_eq!(st.balance, 10_005.0, "one unit banked five points");
 }
 
-/// Spec §6: "break-even move".
+/// Spec the verification checklist: "break-even move".
 #[test]
 fn moving_the_stop_to_break_even_makes_a_retrace_cost_nothing() {
     let mut bars = flat(2);
@@ -222,7 +222,7 @@ fn moving_the_stop_to_break_even_makes_a_retrace_cost_nothing() {
     assert!(st.position.is_none());
 }
 
-/// Spec §6: "run the same scripted session twice, diff the trade logs".
+/// Spec the verification checklist: "run the same scripted session twice, diff the trade logs".
 #[test]
 fn the_same_scripted_session_twice_produces_byte_identical_ledgers() {
     let mut bars = flat(6);
@@ -248,8 +248,8 @@ fn the_same_scripted_session_twice_produces_byte_identical_ledgers() {
     assert!(first.contains("exit"), "the run should actually trade");
 }
 
-/// Spec §6: "place and fill an order, step the cursor back past the fill time,
-/// assert the order/position state has fully reverted" (invariant §5.5).
+/// Spec the verification checklist: "place and fill an order, step the cursor back past the fill time,
+/// assert the order/position state has fully reverted" (invariant I5).
 #[test]
 fn stepping_back_past_a_fill_leaves_no_ghost_of_it() {
     let bars = flat(10);

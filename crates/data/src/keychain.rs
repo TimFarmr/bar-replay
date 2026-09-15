@@ -1,6 +1,6 @@
 //! BYOK provider keys, stored in the OS keychain and nowhere else.
 //!
-//! Spec §4: keys live in the OS keychain, never in a config file, never
+//! Spec the data policy: keys live in the OS keychain, never in a config file, never
 //! logged, never sent anywhere but the provider's own API. That rules out the
 //! obvious shortcut of a `settings.json` next to the Parquet cache, so this
 //! module is the only place in the codebase that holds a secret.
@@ -32,7 +32,7 @@ fn entry(provider: &str) -> Result<keyring::Entry> {
 /// Every failure collapses to `None` on purpose. A locked keychain, a headless
 /// Linux box with no Secret Service, or a user who simply never added a key are
 /// all the same situation for the caller: this provider cannot be used right
-/// now, and the free providers still can (spec §4 — BYOK is an upgrade path,
+/// now, and the free providers still can (the data policy — BYOK is an upgrade path,
 /// never a requirement). Reporting them separately would only give callers a
 /// way to turn a missing key into a crash.
 pub fn get(provider: &str) -> Option<String> {

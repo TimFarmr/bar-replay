@@ -42,7 +42,7 @@ impl Open {
     /// Trading state as of the cursor, rebuilt from the log every time.
     ///
     /// Ticks are not consulted yet: no session pins any, so an ambiguous bar
-    /// takes the pessimistic stop-first assumption and is flagged (spec §5.3).
+    /// takes the pessimistic stop-first assumption and is flagged (invariant I3).
     pub fn sim(&self) -> SimState {
         simulate(
             self.config(),
@@ -153,7 +153,7 @@ impl Inner {
     /// Play mode pushes candles incrementally rather than reloading the window,
     /// so without this a data gap crossed mid-playback would go unreported
     /// until something else forced a reload — and a silent hole in the data is
-    /// exactly what spec §5.4 exists to prevent.
+    /// exactly what invariant I4 exists to prevent.
     pub fn gaps_revealed(&self, previous: Timestamp) -> Result<Vec<Gap>> {
         let open = self.peek()?;
         let cursor = open.replay.cursor();
@@ -181,7 +181,7 @@ impl Inner {
     }
 }
 
-/// Gaps among the base bars the visible window covers (spec §5.4).
+/// Gaps among the base bars the visible window covers (invariant I4).
 fn gaps_in(
     bars: &[Bar],
     instrument: &Instrument,

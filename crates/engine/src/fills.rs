@@ -6,7 +6,7 @@
 //! * **Gaps fill at the open, not at the trigger.** If a bar opens beyond a
 //!   stop, the trader did not get the stop price — they got the open. Filling
 //!   at the trigger would manufacture money that never existed.
-//! * **A bar that touches both exits is ambiguous** (spec §5.3). OHLC cannot
+//! * **A bar that touches both exits is ambiguous** (invariant I3). OHLC cannot
 //!   say which came first. Ticks settle it when we have them; otherwise the
 //!   stop-loss is assumed to have come first and the trade is flagged.
 
@@ -193,7 +193,7 @@ mod tests {
         );
     }
 
-    /// Spec §6: "gap-open through a stop".
+    /// Spec the verification checklist: "gap-open through a stop".
     #[test]
     fn a_stop_that_gaps_past_fills_at_the_worse_open_not_the_trigger() {
         // Long's stop at 99, bar opens at 90: the fill is 90, not 99.
@@ -257,7 +257,7 @@ mod tests {
         );
     }
 
-    /// Spec §5.3: never silently pick the favourable outcome.
+    /// Invariant I3: never silently pick the favourable outcome.
     #[test]
     fn a_bar_touching_both_exits_assumes_the_stop_and_flags_it() {
         let b = bar(100.0, 102.0, 99.0, 101.0);

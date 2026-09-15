@@ -1,10 +1,10 @@
 # ADR 0004: Local Parquet files + DuckDB for queries
 
-Status: accepted (locked by spec §3)
+Status: accepted (locked by docs/adr)
 
 ## Context
 Years of 1-minute bars are tens of millions of rows. Timeframe aggregation
-must be fast and happen on demand (spec §4: never store higher timeframes).
+must be fast and happen on demand (the data policy: never store higher timeframes).
 No server is allowed.
 
 ## Decision

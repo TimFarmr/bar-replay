@@ -1,4 +1,4 @@
-//! Gap taxonomy (spec §5.4).
+//! Gap taxonomy (invariant I4).
 //!
 //! Missing data is always rendered as a gap and never interpolated, but not
 //! all gaps mean the same thing:
@@ -40,7 +40,7 @@ pub struct Gap {
 
 /// The FX week opens Sunday 17:00 and closes Friday 17:00 in New York, which
 /// is the convention every FX venue uses. Expressed in New York local time so
-/// chrono-tz handles DST rather than a hand-rolled offset (spec §4).
+/// chrono-tz handles DST rather than a hand-rolled offset.
 const FX_OPEN_HOUR: u32 = 17;
 const FX_TZ: Tz = Tz::America__New_York;
 
@@ -148,7 +148,7 @@ mod tests {
         }
     }
 
-    /// Spec §6: a weekend gap must render differently from an injected
+    /// Spec the verification checklist: a weekend gap must render differently from an injected
     /// missing-data gap during trading hours.
     #[test]
     fn a_weekend_and_a_hole_during_trading_hours_are_classified_differently() {

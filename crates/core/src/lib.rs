@@ -1,6 +1,6 @@
 //! Core model, timeframe math and provider interface for the bar-replay
-//! backtester. No UI and no I/O live here: adapters (M1) implement
-//! [`Provider`], the store (M1) persists [`Bar`]s, the engine (M2+) drives a
+//! backtester. No UI and no I/O live here: adapters implement
+//! [`Provider`], the store persists [`Bar`]s, and the engine drives a
 //! cursor over them.
 
 pub mod aggregate;
@@ -14,7 +14,7 @@ pub use timeframe::Timeframe;
 use serde::{Deserialize, Serialize};
 
 /// UTC milliseconds since the Unix epoch. The replay cursor is one of these,
-/// never an array index (spec §5.1: no lookahead).
+/// never an array index (invariant I1: no lookahead).
 #[derive(
     Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Default,
 )]
@@ -26,7 +26,7 @@ impl Timestamp {
     pub const HOUR: i64 = 3_600_000;
     pub const DAY: i64 = 86_400_000;
 
-    /// Start of the `step`-ms bucket containing `self` (`floor(T, tf)` in §5.2).
+    /// Start of the `step`-ms bucket containing `self` (`floor(T, tf)` in I2).
     /// Euclidean so pre-1970 timestamps floor downward too.
     pub fn floor(self, step: i64) -> Timestamp {
         Timestamp(self.0.div_euclid(step) * step)
@@ -54,7 +54,7 @@ pub struct Bar {
 }
 
 /// One quote. Providers that only publish trade prints set `bid == ask` and
-/// declare [`SpreadMode::Synthetic`] so the UI can say so (spec §5.3).
+/// declare [`SpreadMode::Synthetic`] so the UI can say so (invariant I3).
 #[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Tick {
     pub ts: Timestamp,
@@ -64,7 +64,7 @@ pub struct Tick {
 
 /// When an instrument is expected to be trading. Used to tell a calendar gap
 /// (weekend or holiday — normal) from a data gap (the provider is missing bars
-/// during hours the market was open), which spec §5.4 requires be rendered
+/// during hours the market was open), which invariant I4 requires be rendered
 /// differently and never conflated.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -77,7 +77,7 @@ pub enum Market {
 }
 
 /// Where the spread in a session comes from. Always surfaced in the UI: a
-/// trader must never mistake a synthetic spread for historical fact (§5.3).
+/// trader must never mistake a synthetic spread for historical fact (I3).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SpreadMode {
@@ -103,7 +103,7 @@ pub struct Instrument {
     pub multiplier: f64,
     pub quote_currency: String,
     /// Session/daily/weekly boundaries are computed against this zone and it is
-    /// always shown in the UI, never silently assumed (spec §4).
+    /// always shown in the UI, never silently assumed.
     pub session_tz: chrono_tz::Tz,
     pub spread_mode: SpreadMode,
     pub market: Market,

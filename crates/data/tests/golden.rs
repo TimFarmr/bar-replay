@@ -1,4 +1,4 @@
-//! Golden test (spec §6): aggregate a known week of EURUSD 1-minute data to
+//! Golden test: aggregate a known week of EURUSD 1-minute data to
 //! 1-hour and diff against a committed fixture.
 //!
 //! The fixture is real Dukascopy data, so this exercises the whole stored

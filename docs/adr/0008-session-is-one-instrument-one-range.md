@@ -9,4 +9,4 @@ Switching instruments starts a new session.
 ## Consequences
 Session and candle data are 1:1, so a session can pin its data (ADR 0012).
 Orders and positions carry no instrument field. Multi-instrument replay is
-deferred with multi-chart layouts (spec §2).
+deferred with multi-chart layouts (the non-goals).

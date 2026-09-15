@@ -1,4 +1,4 @@
-//! Settings: bring-your-own-key, CSV import and cache management (M5).
+//! Settings: bring-your-own-key, CSV import and cache management.
 //!
 //! API keys go to the OS keychain and nowhere else — not to a config file, not
 //! to a log, and not to any server of ours (ADR 0007). Nothing here ever
@@ -78,7 +78,7 @@ pub fn pick_csv() -> Option<String> {
 ///
 /// Rows must be strictly ascending with no duplicates. A file that breaks that
 /// is rejected with the offending line number rather than quietly sorted — a
-/// silent sort would fabricate a price history that never happened (spec §4).
+/// silent sort would fabricate a price history that never happened.
 #[tauri::command]
 pub fn import_csv(
     state: State<'_, AppState>,
@@ -106,7 +106,7 @@ pub fn import_csv(
         quote_currency: String::new(),
         session_tz: chrono_tz::Tz::UTC,
         // The file carries traded prices only, so any spread is the user's
-        // own assumption and the session UI says so (spec §5.3).
+        // own assumption and the session UI says so (invariant I3).
         spread_mode: SpreadMode::Synthetic,
         market: Market::Continuous,
     };
@@ -126,7 +126,7 @@ pub fn import_csv(
 
 /// Forget the downloaded candles for one instrument.
 ///
-/// Deliberately manual: nothing is evicted automatically (spec §4), so the
+/// Deliberately manual: nothing is evicted automatically, so the
 /// disk-space trade-off stays the user's to make. Sessions keep their own
 /// pinned copy and are unaffected (ADR 0012).
 #[tauri::command]

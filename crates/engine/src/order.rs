@@ -3,7 +3,7 @@
 //! The ledger is the source of truth; the position is folded from it and never
 //! stored as independently mutable state (ADR 0009). Nothing in here mutates
 //! anything: the simulator rebuilds all of it from the event log and the bars,
-//! which is what makes stepping backward exact (spec §5.5).
+//! which is what makes stepping backward exact (invariant I5).
 
 use replay_core::Timestamp;
 use serde::{Deserialize, Serialize};
@@ -97,7 +97,7 @@ pub enum Reason {
 
 /// Whether the fill price rests on an assumption rather than on data.
 ///
-/// Spec §5.3: when one bar touches both stop-loss and take-profit, OHLC alone
+/// Invariant I3: when one bar touches both stop-loss and take-profit, OHLC alone
 /// cannot say which came first. Finer data settles it when we have it;
 /// otherwise the pessimistic answer is used and **flagged here**, so the UI can
 /// mark every trade that depended on it.
@@ -134,11 +134,11 @@ pub struct Trade {
     pub realised: f64,
     /// Distance from entry price to the stop that was set when this position
     /// opened, per unit. `None` when the trade was taken without a stop, which
-    /// is also why an R-multiple is not always definable (M4).
+    /// is also why an R-multiple is not always definable.
     pub risk_per_unit: Option<f64>,
 }
 
-/// A completed entry-to-exit round trip, for the stats in M4. A view over the
+/// A completed entry-to-exit round trip. A view over the
 /// ledger, never a second table.
 #[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

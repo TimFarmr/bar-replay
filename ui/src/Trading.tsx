@@ -8,7 +8,7 @@ import type { Instrument, OrderKind, Side, Trading as TradingState, View } from 
  * Everything here is a view over state the Rust engine recomputed from the
  * event log; nothing is tracked in React. That is deliberate — a second copy of
  * position state in the UI is exactly how a "ghost fill" survives a step
- * backwards (spec §5.5).
+ * backwards (invariant I5).
  */
 export function Trading({
   trading,
@@ -186,7 +186,7 @@ export function Trading({
                   <td>{px(t.price)}</td>
                   <td>
                     {t.reason}
-                    {/* Spec §5.3: say so wherever the assumption affected a trade. */}
+                    {/* Invariant I3: say so wherever the assumption affected a trade. */}
                     {t.assumption === 'sl_first' && (
                       <span
                         className="flag"

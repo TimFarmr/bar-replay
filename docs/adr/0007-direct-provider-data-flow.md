@@ -1,6 +1,6 @@
 # ADR 0007: Market data flows client → provider directly
 
-Status: accepted (locked by spec §3)
+Status: accepted (locked by docs/adr)
 
 ## Context
 The user is the data subscriber; this project must never redistribute market
